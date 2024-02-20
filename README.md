@@ -1,4 +1,4 @@
-# NJ .NET Workshop February 27, 28, and March 1, 2024
+# New Jersey Civil Service Commission (CSC) .NET Workshop February 27, 28, and March 1, 2024
 
 _Reason_: migrate application code to a more modern .net.
 
