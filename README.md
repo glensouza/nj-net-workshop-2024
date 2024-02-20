@@ -119,6 +119,8 @@ Regardless of Visual Studio Subscription, the other tools you will need:
   - [Visual Studio 2022 Fundamentals](https://app.pluralsight.com/library/courses/visual-studio-2022-fundamentals/table-of-contents)
   - [Visual Studio 2022: Big Picture](https://app.pluralsight.com/library/courses/visual-studio-2022-big-picture/table-of-contents)
   - [.NET 6: The Big Picture](https://app.pluralsight.com/library/courses/dot-net-6-big-picture/table-of-contents)
+  - [C# The Big Picture](https://app.pluralsight.com/library/courses/c-sharp-big-picture/table-of-contents)
+  - [C# 10 The Big Picture](https://app.pluralsight.com/library/courses/c-sharp-10-big-picture/table-of-contents)
   - [C# 10 Fundamentals](https://app.pluralsight.com/library/courses/c-sharp-10-fundamentals/table-of-contents)
 
 ## GitHub LevelUp Resources
@@ -129,6 +131,7 @@ Regardless of Visual Studio Subscription, the other tools you will need:
 - [GitHub Administration](https://learn.microsoft.com/en-us/users/githubtraining/collections/mom7u1gzjdxw03)
 - [GitHub Guide for Collaboration](https://github.blog/2023-08-04-a-checklist-and-guide-to-get-your-repository-collaboration-ready)
 
-## Roadmaps
+## Looking Ahead
 
+- [.NET What's Next](https://dotnet.microsoft.com/en-us/next)
 - [GitHub Roadmap](https://github.com/github/roadmap)
