@@ -13,30 +13,36 @@ while (playAgain)
 {
     Console.WriteLine("Rock, Paper, Scissors!");
     WriteScore();
-    Console.WriteLine("Enter your choice:");
-    Console.WriteLine("1. Rock");
-    Console.WriteLine("2. Paper");
-    Console.WriteLine("3. Scissors");    
-    int userChoice = Convert.ToInt32(Console.ReadLine());
+
+    // Declare an integer to store the user's choice
+    int choice;
+
+    // Start a loop that will continue until the user enters a valid choice
+    do
+    {
+        // Prompt the user to enter their choice
+        Console.WriteLine("Enter your choice:");
+
+        // Display the options to the user
+        Console.WriteLine("1. Rock");
+        Console.WriteLine("2. Paper");
+        Console.WriteLine("3. Scissors");
+
+        // Read the user's input and convert it to an integer
+        choice = Convert.ToInt32(Console.ReadLine());
+
+    // If the user's choice is not between 1 and 3, repeat the loop
+    } while (choice < 1 || choice > 3);
+
     int computerChoice = new Random().Next(1, 4);
     string userChoiceString = "";
     string computerChoiceString = "";
 
-    userChoiceString = userChoice switch
-    {
-        1 => "Rock",
-        2 => "Paper",
-        3 => "Scissors",
-        _ => userChoiceString
-    };
+    // Convert the user's choice to a string using the ConvertChoiceToString method
+    userChoiceString = ConvertChoiceToString(userChoice, userChoiceString);
 
-    computerChoiceString = computerChoice switch
-    {
-        1 => "Rock",
-        2 => "Paper",
-        3 => "Scissors",
-        _ => computerChoiceString
-    };
+    // Convert the computer's choice to a string using the ConvertChoiceToString method
+    computerChoiceString = ConvertChoiceToString(computerChoice, computerChoiceString);
 
     Console.WriteLine("");
     Console.WriteLine("You chose: " + userChoiceString);
@@ -74,4 +80,21 @@ void WriteScore()
     Console.WriteLine("");
     Console.WriteLine($"Score: {wins} wins, {losses} losses, {ties} ties");
     Console.WriteLine("");
+}
+
+// This method converts the numeric choice to a string representation
+public string ConvertChoiceToString(int choice, string defaultChoice)
+{
+    // Use a switch statement to determine the string representation of the choice
+    return choice switch
+    {
+        // If the choice is 1, return "Rock"
+        1 => "Rock",
+        // If the choice is 2, return "Paper"
+        2 => "Paper",
+        // If the choice is 3, return "Scissors"
+        3 => "Scissors",
+        // If the choice is anything else, return the default choice
+        _ => defaultChoice
+    };
 }
