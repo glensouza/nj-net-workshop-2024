@@ -1,0 +1,15 @@
+﻿@{
+    this.ViewData["Title"] = "Home Page";
+    string carName = this.ViewData["CarName"]?.ToString() ?? string.Empty;
+    string carImage = this.ViewData["CarImage"]?.ToString() ?? string.Empty;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @carName</h1>
+    @if(!string.IsNullOrEmpty(carImage))
+    {
+        <p>
+            <img src="@carImage" alt="Random Car Image"/>
+        </p>
+    }
+</div>

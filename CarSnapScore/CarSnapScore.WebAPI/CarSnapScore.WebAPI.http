@@ -1,0 +1,6 @@
+@CarSnapScore.WebAPI_HostAddress = http://localhost:5188
+
+GET {{CarSnapScore.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
