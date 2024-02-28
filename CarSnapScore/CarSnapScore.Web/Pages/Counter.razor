@@ -1,0 +1,55 @@
+﻿@page "/counter"
+
+@inject CarDoesNotExist CarDoesNotExist
+@inject NameGenerator NameGenerator
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @(this.currentCount)</p>
+
+<button class="btn btn-primary" @onclick="this.IncrementCount">Click me</button>
+
+<h2>Car Name: @(this.carName) </h2>
+<h3>All Car Names:</h3>
+<ul>
+    @foreach(CarCounterViewModel tempCarName in this.cars.OrderBy(s => s.CarName))
+    {
+        <li>@tempCarName.Id - @tempCarName.CarName</li>
+    }
+</ul>
+
+@code {
+    private int currentCount;
+    private string carName = string.Empty;
+    private readonly List<CarCounterViewModel> cars = [];
+
+    private void IncrementCount()
+    {
+        this.currentCount++;
+
+        do
+        {
+            this.carName = this.NameGenerator.GetRandomCarName();
+            Console.WriteLine(this.carName);
+        }
+        while (this.cars.Any(s => s.CarName == this.carName));
+
+        // string image = await this.CarDoesNotExist.GetPicture();
+
+        this.cars.Add(new CarCounterViewModel
+        {
+            Id = this.currentCount.ToString("D3"), 
+            CarName = this.carName,
+            Image = string.Empty //image
+        });
+    }
+
+    private class CarCounterViewModel()
+    {
+        public string Id { get; init; } = string.Empty;
+        public string CarName { get; init; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
+    }
+}
