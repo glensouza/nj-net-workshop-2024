@@ -1,18 +1,21 @@
-﻿@model List<CarSnapScore.MVC.Models.CarViewModel>
+﻿@model List<CarSnapScore.MVC.Models.CarModel>
 @{
     this.ViewData["Title"] = "Settings";
 }
 
 <div class="text-center">
     <h1 class="display-4">Settings:</h1>
-    <form method="post" action="/Home/Settings">
-        <button type="submit" class="btn btn-primary">Generate 5 Cars</button>
-    </form>
     
-    @if (this.Model.Count > 0)
+    @if (this.Model.Count == 0)
+    {
+        <form asp-controller="Home" asp-action="Settings" method="post">
+            <button type="submit" class="btn btn-primary">Generate 5 Cars</button>
+        </form>
+    }
+    else
     {
         <ul>
-            @foreach (CarViewModel car in this.Model)
+            @foreach (CarModel car in this.Model)
             {
                 <li>
                     @car.CarName <img src="@car.CarImage" alt="Car Image"/>

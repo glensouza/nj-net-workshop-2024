@@ -1,7 +1,36 @@
-﻿@{
+﻿@model VoteViewModel
+@{
     this.ViewData["Title"] = "Vote";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Vote:</h1>
+    <h1 class="display-4">Vote @this.Model.VoteId (@this.Model.VotesLeft):</h1>
+    @if (this.Model.VotesLeft == 0)
+    {
+        <p>You have no votes left.</p>
+    }
+    else
+    {
+        <div class="form-group">
+            <!-- display two images side by side -->
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="@(this.Model.Car1Image)" alt="@(this.Model.Car1Name) Car Image"/>
+                    <form asp-controller="Home" asp-action="Vote" method="post">
+                        <input type="hidden" name="voteId" value="@(this.Model.VoteId)" />
+                        <input type="hidden" name="winner" value="@(this.Model.Car1Name)" />
+                        <button type="submit">Vote for @(this.Model.Car1Name)</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <img src="@(this.Model.Car2Image)" alt="@(this.Model.Car1Name) Car Image"/>
+                    <form asp-controller="Home" asp-action="Vote" method="post">
+                        <input type="hidden" name="voteId" value="@(this.Model.VoteId)" />
+                        <input type="hidden" name="winner" value="@(this.Model.Car2Name)" />
+                        <button type="submit">Vote for @(this.Model.Car2Name)</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
 </div>

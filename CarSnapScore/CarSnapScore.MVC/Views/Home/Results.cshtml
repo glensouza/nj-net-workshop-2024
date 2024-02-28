@@ -1,7 +1,24 @@
-﻿@{
+﻿@model List<CarModel>
+@{
     this.ViewData["Title"] = "Results";
 }
 
 <div class="text-center">
     <h1 class="display-4">Results:</h1>
+    
+    @if(this.Model.Count > 0)
+    {
+        <ul>
+            @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
+            {
+                <li>
+                    @car.CarName (@car.Score) <img src="@car.CarImage" alt="@car.CarName Car Image" />
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No cars found.</p>
+    }
 </div>

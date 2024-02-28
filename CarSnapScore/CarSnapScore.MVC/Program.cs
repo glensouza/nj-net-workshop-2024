@@ -1,9 +1,12 @@
+using CarSnapScore.MVC.Data;
 using CarSnapScore.Services6;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<CarRepository>();
 
 builder.Services.AddSingleton<NameGenerator>();
 builder.Services.AddSingleton<CarDoesNotExist>();
