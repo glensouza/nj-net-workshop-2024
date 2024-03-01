@@ -9,7 +9,6 @@
     @if(this.Model.Count > 0)
     {
         <div class="form-group">
-            <!-- display two images side by side -->
             <div class="row">
                 @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
                 {
