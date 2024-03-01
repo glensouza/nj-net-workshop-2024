@@ -47,7 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: IaCDeloy
-      url: https://${{ steps.swahostname.outputs.DEFAULT_HOSTNAME }}
     needs: cleanup-resources
     steps:
 
@@ -72,13 +71,6 @@ jobs:
         parameters: location=${{ env.Location }} commonResourceName=${{ vars.RESOURCE_NAME }}
         failOnStdErr: false
         deploymentName: bicep-ci-${{ github.run_id }}
-
-    - name: Get SWA Default Hostname
-      id: swahostname
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: echo DEFAULT_HOSTNAME=$(az staticwebapp show -n ${{ vars.RESOURCE_NAME }}web --query 'defaultHostname') | tr -d '"' >> "$GITHUB_OUTPUT" 
 
   build-and-deploy-apps:
     runs-on: ubuntu-latest
