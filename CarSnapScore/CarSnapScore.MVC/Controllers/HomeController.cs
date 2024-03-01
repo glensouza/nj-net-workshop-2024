@@ -36,7 +36,15 @@ namespace CarSnapScore.MVC.Controllers
             this.ViewData["CarImage"] = carImage;
             this.logger.LogInformation("Got Car Image: {0}", carImage);
 
+            this.carRepository.AddCar(new CarModel() { CarName = carName, CarImage = carImage });
+
             return this.View();
+        }
+
+        public IActionResult VoteExplorer()
+        {
+            List<VoteModel> votes = this.carRepository.GetAllVotes();
+            return this.View(votes);
         }
 
         public IActionResult Vote()
@@ -51,18 +59,22 @@ namespace CarSnapScore.MVC.Controllers
                 VotesLeft = this.carRepository.GetVotesLeft()
             };
 
-            if (voteDb is not null)
+            if (voteDb is null)
             {
-                vote.VoteId = voteDb.Id;
-
-                CarModel? car = this.carRepository.GetCarByName(vote.Car1Name);
-                vote.Car1Image = car?.CarImage ?? string.Empty;
-                vote.Car1Score = car?.Score ?? 0;
-
-                car = this.carRepository.GetCarByName(vote.Car2Name);
-                vote.Car2Image = car?.CarImage ?? string.Empty;
-                vote.Car2Score = car?.Score ?? 0;
+                return this.View(vote);
             }
+
+            vote.VoteId = voteDb.Id;
+
+            bool order = Random.Shared.Next(0, 1) == 1;
+
+            CarModel? car = this.carRepository.GetCarByName(order ? vote.Car1Name : vote.Car2Name);
+            vote.Car1Image = car?.CarImage ?? string.Empty;
+            vote.Car1Score = car?.Score ?? 0;
+
+            car = this.carRepository.GetCarByName(order ? vote.Car2Name: vote.Car1Name);
+            vote.Car2Image = car?.CarImage ?? string.Empty;
+            vote.Car2Score = car?.Score ?? 0;
 
             return this.View(vote);
         }

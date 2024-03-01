@@ -4,21 +4,41 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Results:</h1>
+    <h1 class="display-4">Results (@this.Model.Count):</h1>
     
     @if(this.Model.Count > 0)
     {
-        <ul>
-            @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
-            {
-                <li>
-                    @car.CarName (@car.Score) <img src="@car.CarImage" alt="@car.CarName Car Image" />
-                </li>
-            }
-        </ul>
+        <div class="form-group">
+            <!-- display two images side by side -->
+            <div class="row">
+                @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
+                {
+                    <div class="col-md-3">
+                        <h4>@car.CarName</h4>
+                        <img src="@car.CarImage" class="car" alt="@car.CarName Car Image" />
+                    </div>
+                }
+            </div>
+        </div>
     }
     else
     {
         <p>No cars found.</p>
     }
 </div>
+
+<style>
+    img.car {
+        height: 90%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .col-md-3 {
+        margin-top: 25px;
+    }
+
+    h4 {
+        margin-botton: 0;
+    }
+</style>

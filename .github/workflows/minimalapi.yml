@@ -1,0 +1,62 @@
+name: Minimal API App CI
+      
+on:
+  push:
+    branches:
+      - "main" 
+    paths:
+      - ".github/workflows/minimalapi.yml"
+      - ".github/workflows/minimalapi/**"
+      - "CarSnapScore/CarSnapScore.MinimalAPI/**"
+      - "CarSnapScore/CarSnapScore.Services/**"
+      - "CarSnapScore/CarSnapScore.Services6/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true    
+
+permissions:
+  id-token: write
+  contents: read
+    
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy MVC App
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Look for IaC changed files
+      id: iac-changed-files
+      run: |
+        declare changed_file=false
+        if [[ ${{ github.event_name }} != 'workflow_dispatch' ]];
+        then
+          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs); do
+            echo "$file was changed"
+            if [[ $file == .github/workflows/iac.yml ]] || [[ $file == CarSnapScore/CarSnapScore.CloudInfrastructure/* ]];
+            then
+              changed_file=true
+              break
+            fi
+          done
+        else
+          echo "workflow_dispatch event, skipping changed files check"
+        fi
+        echo "changed_file=$changed_file"
+        echo "changed_file=$changed_file" >> $GITHUB_ENV
+        echo "github.event_name=${{ github.event_name }}"
+
+    - name: Build and Deploy Minimal API App
+      if: ${{ github.event_name == 'workflow_dispatch' || steps.iac-changed-files.outputs.changed_file == false }}
+      uses: './.github/workflows/minimalapi'
+      with:
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        RESOURCE_NAME: ${{ vars.RESOURCE_NAME }}

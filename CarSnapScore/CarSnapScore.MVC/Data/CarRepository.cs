@@ -57,7 +57,7 @@ public class CarRepository
         }
 
         votes.Shuffle();
-        VoteModel? vote = this.carContext.Votes.FirstOrDefault();
+        VoteModel? vote = votes.FirstOrDefault();
         return vote;
     }
 
@@ -71,5 +71,23 @@ public class CarRepository
 
         vote.Winner = winner;
         this.carContext.SaveChanges();
+
+        CarModel? winningCar = this.GetCarByName(winner);
+        CarModel? losingCar = this.GetCarByName(vote.Car1 == winner ? vote.Car2 : vote.Car1);
+        if (winningCar is null || losingCar is null)
+        {
+            return;
+        }
+
+        (double, double) scores = EloCalculator.CalculateElo(winningCar.Score, losingCar.Score);
+        winningCar.Score += scores.Item1;
+        this.carContext.SaveChanges();
+        losingCar.Score += scores.Item2;
+        this.carContext.SaveChanges();
+    }
+
+    public List<VoteModel> GetAllVotes()
+    {
+        return this.carContext.Votes.ToList() ?? new List<VoteModel>();
     }
 }

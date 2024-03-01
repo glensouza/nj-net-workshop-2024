@@ -14,13 +14,33 @@
     }
     else
     {
-        <ul>
-            @foreach (CarModel car in this.Model)
-            {
-                <li>
-                    @car.CarName <img src="@car.CarImage" alt="Car Image"/>
-                </li>
-            }
-        </ul>
+        <div class="form-group">
+            <!-- display two images side by side -->
+            <div class="row">
+                @foreach (CarModel car in this.Model.OrderBy(s => s.CarName))
+                {
+                    <div class="col-md-2">
+                        <h4>@car.CarName</h4>
+                        <img src="@car.CarImage" class="car" alt="@car.CarName Car Image" />
+                    </div>
+                }
+            </div>
+        </div>
     }
 </div>
+
+<style>
+    img.car {
+        height: 90%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .col-md-2 {
+        margin-top: 25px;
+    }
+
+    h4 {
+        margin-botton: 0;
+    }
+</style>

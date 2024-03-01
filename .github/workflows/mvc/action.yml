@@ -1,0 +1,49 @@
+name: MVC App Build and Deploy 
+
+description: "Build and deploy MVC App"
+
+inputs:
+  AZURE_TENANT_ID:
+    required: true
+  AZURE_SUBSCRIPTION_ID:
+    required: true
+  AZURE_CLIENT_ID:
+    required: true
+  RESOURCE_NAME:
+    required: true
+
+permissions:
+  id-token: write #This is required for requesting the JWT
+
+runs:
+  using: "composite"
+  steps:
+  - name: 'Checkout GitHub Action'
+    uses: actions/checkout@v3
+
+  - name: Setup DotNet 6 Environment
+    uses: actions/setup-dotnet@v3
+    with:
+      dotnet-version: '6.x'
+
+  - name: Build with dotnet
+    shell: bash
+    run: |
+      pushd './CarSnapScore/CarSnapScore.MVC'
+      dotnet build --configuration Release
+      dotnet publish -c Release  --output ./output
+      popd
+
+  - name: Login via Azure
+    uses: azure/login@v1
+    with:
+      tenant-id: ${{ inputs.AZURE_TENANT_ID }}
+      subscription-id: ${{ inputs.AZURE_SUBSCRIPTION_ID }}
+      client-id: ${{ inputs.AZURE_CLIENT_ID }}
+
+  - name: Deploy to Azure Web App
+    uses: azure/webapps-deploy@v2
+    with:
+      app-name: '${{ inputs.RESOURCE_NAME }}minimalapi'
+      slot-name: 'production'
+      package: ./CarSnapScore/CarSnapScore.MVC/output

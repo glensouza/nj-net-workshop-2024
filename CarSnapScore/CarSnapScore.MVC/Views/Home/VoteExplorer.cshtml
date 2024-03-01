@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CarSnapScore.MVC.Models.VoteModel>
+@{
+    this.ViewData["Title"] = "Vote Explorer";
+}
+
+<h1>Vote Explorer (@(this.Model.Count()))</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Car 1</th>
+            <th>Car 2</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (VoteModel item in this.Model)
+    {
+        <tr>
+            <td>@(this.Html.DisplayFor(modelItem => item.Id))</td>
+            <td class="@(item.Winner == item.Car1 ? "winner" : string.Empty)">@(this.Html.DisplayFor(modelItem => item.Car1))</td>
+            <td class="@(item.Winner == item.Car2 ? "winner" : string.Empty)">@(this.Html.DisplayFor(modelItem => item.Car2))</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<style>
+    td.winner {
+        font-weight: bold;
+    }
+</style>

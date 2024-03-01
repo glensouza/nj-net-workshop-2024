@@ -6,8 +6,8 @@ public class VoteViewModel
     public int VotesLeft { get; set; }
     public string Car1Name { get; set; } = string.Empty;
     public string Car1Image { get; set; } = string.Empty;
-    public int Car1Score { get; set; }
+    public double Car1Score { get; set; }
     public string Car2Name { get; set; } = string.Empty;
     public string Car2Image { get; set; } = string.Empty;
-    public int Car2Score { get; set; }
+    public double Car2Score { get; set; }
 }
