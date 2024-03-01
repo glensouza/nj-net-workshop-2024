@@ -44,6 +44,6 @@ runs:
   - name: Deploy to Azure Web App
     uses: azure/webapps-deploy@v2
     with:
-      app-name: '${{ inputs.RESOURCE_NAME }}web'
+      app-name: '${{ inputs.RESOURCE_NAME }}webapp'
       slot-name: 'production'
       package: ./CarSnapScore/CarSnapScore.MVC/output
