@@ -35,6 +35,7 @@ runs:
       shell: bash
       run: |
         pushd './CarSnapScore/CarSnapScore.API'
+        dotnet restore
         dotnet build --configuration Release --output ./output
         popd
 
