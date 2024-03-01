@@ -68,7 +68,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         scope: subscription
         region: ${{ env.Location }}
-        template: ./CarSnapScore/CarSnapScore.CloudInfrastrucure/main.bicep
+        template: ./CarSnapScore/CarSnapScore.CloudInfrastructure/main.bicep
         parameters: location=${{ env.Location }} commonResourceName=${{ vars.RESOURCE_NAME }}
         failOnStdErr: false
         deploymentName: bicep-ci-${{ github.run_id }}
