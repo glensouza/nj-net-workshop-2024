@@ -44,4 +44,4 @@ runs:
       with:
         app-name: '${{ inputs.RESOURCE_NAME }}func'
         slot-name: 'Production'
-        package: './CarSnapScore/CarSnapScore.CloudInfrastructure/output'
+        package: './CarSnapScore/CarSnapScore.API/output'
