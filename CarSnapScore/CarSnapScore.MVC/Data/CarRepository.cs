@@ -137,14 +137,29 @@ public class CarRepository
             this.carContext.Votes.Remove(vote);
             this.carContext.SaveChanges();
 
+            if (string.IsNullOrEmpty(vote.Winner))
+            {
+                continue;
+            }
+
             string competitor = vote.Car1 == carName ? vote.Car2 : vote.Car1;
-            CarModel? competingCar = this.GetCarByName(vote.Car2);
+            CarModel? competingCar = this.GetCarByName(competitor);
             if (competingCar is null)
             {
                 continue;
             }
 
-            competingCar.Score -= vote.Winner == competitor ? vote.Score : -vote.Score;
+            if (vote.Winner == competitor)
+            {
+                competingCar.Score -= vote.Score;
+                competingCar.Wins--;
+            }
+            else
+            {
+                competingCar.Score += vote.Score;
+                competingCar.Losses--;
+            }
+
             this.carContext.SaveChanges();
         }
 
