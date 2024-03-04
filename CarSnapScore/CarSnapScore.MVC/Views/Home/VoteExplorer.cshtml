@@ -10,6 +10,7 @@
             <th>Id</th>
             <th>Car 1</th>
             <th>Car 2</th>
+            <th>Score</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
             <td>@(this.Html.DisplayFor(modelItem => item.Id))</td>
             <td class="@(item.Winner == item.Car1 ? "winner" : string.Empty)">@(this.Html.DisplayFor(modelItem => item.Car1))</td>
             <td class="@(item.Winner == item.Car2 ? "winner" : string.Empty)">@(this.Html.DisplayFor(modelItem => item.Car2))</td>
+            <td>@(this.Html.DisplayFor(modelItem => item.Score))</td>
         </tr>
     }
     </tbody>

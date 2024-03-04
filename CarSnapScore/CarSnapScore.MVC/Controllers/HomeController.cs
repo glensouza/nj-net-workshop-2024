@@ -151,4 +151,29 @@ public class HomeController : Controller
     {
         return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
     }
+
+    [HttpPost]
+    public IActionResult ResetMe()
+    {
+        this.carRepository.ResetMe();
+        return this.RedirectToAction("Index");
+    }
+
+    public IActionResult ResetVotes()
+    {
+        this.carRepository.ResetVotes();
+        return this.RedirectToAction("VoteExplorer");
+    }
+
+    [HttpPost]
+    public IActionResult DeleteCar(string carName)
+    {
+        if (string.IsNullOrEmpty(carName))
+        {
+            return this.RedirectToAction("Results");
+        }
+
+        this.carRepository.DeleteCar(carName);
+        return this.RedirectToAction("Results");
+    }
 }

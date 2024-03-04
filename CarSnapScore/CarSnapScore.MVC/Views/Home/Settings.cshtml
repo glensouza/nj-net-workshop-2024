@@ -4,13 +4,31 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Settings:</h1>
     
     @if (this.Model.Count == 0)
     {
-        <form asp-controller="Home" asp-action="Settings" method="post">
-            <button type="submit" class="btn btn-primary">Generate 5 Cars</button>
-        </form>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3"><h1 class="display-4">Settings:</h1></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <form asp-controller="Home" asp-action="Settings" method="post">
+                        <button type="submit" class="btn btn-success">Generate 5 Cars</button>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <form asp-controller="Home" asp-action="ResetMe" method="post">
+                        <button type="submit" class="btn btn-warning">Reset Me</button>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <form asp-controller="Home" asp-action="ResetVotes" method="post">
+                        <button type="submit" class="btn btn-danger">Reset Votes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     }
     else
     {

@@ -9,4 +9,5 @@ public class VoteModel
     public string Car1 { get; set; } = string.Empty;
     public string Car2 { get; set; } = string.Empty;
     public string? Winner { get; set; }
+    public double Score { get; set; }
 }

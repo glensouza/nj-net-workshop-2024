@@ -10,11 +10,45 @@
     {
         <div class="form-group">
             <div class="row">
-                @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
+                @foreach (CarModel car in this.Model.Where(s => s.Wins > 0 || s.Losses > 0).OrderByDescending(s => s.Score).ThenByDescending(s => s.Wins).ThenBy(s => s.Losses).ThenBy(s => s.CarName))
                 {
-                            <div class="col-md-3 @(car.IsMe ? "me" : string.Empty)">
-                        <h4>@car.CarName</h4>
+                    <div class="col-md-3 @(car.IsMe ? "me" : "notMe")">
+                        @if (car.IsMe)
+                        {
+                            <h4>@car.CarName</h4>
+                        }
+                        else
+                        {
+                            <form asp-controller="Home" asp-action="DeleteCar" method="post">
+                                <input type="hidden" name="carName" value="@car.CarName"/>
+                                <h4>@car.CarName <button type="submit" class="btn btn-danger">Delete</button></h4>
+                            </form>
+                        }
+                        <img src="@car.CarImage" class="car" alt="@car.CarName Car Image"/>
+                        <span><strong>Score</strong>: @car.Score.ToString("F3") <strong>Record</strong>: @car.Wins-@car.Losses</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <h2 class="display-4">No votes yet:</h2>
+        <div class="form-group">
+            <div class="row">
+                @foreach (CarModel car in this.Model.Where(s => s is { Wins: 0, Losses: 0 }).OrderBy(s => s.CarName))
+                {
+                    <div class="col-md-3 @(car.IsMe ? "me" : "notMe")">
+                        @if (car.IsMe)
+                        {
+                            <h4>@car.CarName</h4>
+                        }
+                        else
+                        {
+                            <form asp-controller="Home" asp-action="DeleteCar" method="post">
+                                <input type="hidden" name="carName" value="@car.CarName" />
+                                <h4>@car.CarName <button type="submit" class="btn btn-danger">Delete</button></h4>
+                            </form>
+                        }
                         <img src="@car.CarImage" class="car" alt="@car.CarName Car Image" />
+                        <span><strong>Score</strong>: @car.Score.ToString("F3") <strong>Record</strong>: @car.Wins-@car.Losses</span>
                     </div>
                 }
             </div>
@@ -35,13 +69,23 @@
 
     .col-md-3 {
         margin-top: 25px;
+        padding-bottom: 25px;
     }
 
     .me {
-        border: 5px solid red;
+        border: 5px solid blue;
+    }
+
+    .notMe {
+        border: 2px solid black;
     }
 
     h4 {
         margin-botton: 0;
+    }
+
+    span {
+        display: block;
+        margin-top: -10px;
     }
 </style>
