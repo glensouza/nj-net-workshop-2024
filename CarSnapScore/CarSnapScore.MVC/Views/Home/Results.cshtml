@@ -12,7 +12,7 @@
             <div class="row">
                 @foreach (CarModel car in this.Model.OrderByDescending(s => s.Score).ThenBy(s => s.CarName))
                 {
-                    <div class="col-md-3">
+                            <div class="col-md-3 @(car.IsMe ? "me" : string.Empty)">
                         <h4>@car.CarName</h4>
                         <img src="@car.CarImage" class="car" alt="@car.CarName Car Image" />
                     </div>
@@ -35,6 +35,10 @@
 
     .col-md-3 {
         margin-top: 25px;
+    }
+
+    .me {
+        border: 5px solid red;
     }
 
     h4 {

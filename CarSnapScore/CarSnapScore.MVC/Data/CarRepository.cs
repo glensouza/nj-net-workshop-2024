@@ -7,6 +7,11 @@ public class CarRepository
 {
     private readonly CarSnapScoreContext carContext = new();
 
+    public CarModel? GetMyCar()
+    {
+        return this.carContext.Cars.FirstOrDefault(s => s.IsMe);
+    }
+
     public List<CarModel> GetAllCars()
     {
         return this.carContext.Cars.ToList() ?? new List<CarModel>();

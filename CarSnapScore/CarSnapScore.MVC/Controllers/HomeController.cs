@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CarSnapScore.MVC.Data;
 using CarSnapScore.Services6;
+using System;
 
 namespace CarSnapScore.MVC.Controllers;
 
@@ -28,15 +29,25 @@ public class HomeController : Controller
     {
         this.logger.LogInformation("I'm inside the Home Controller, Index Action");
             
-        string carName = this.nameGenerator.GetRandomCarName();
-        this.ViewData["CarName"] = carName;
-        this.logger.LogInformation("Got Car Name: {0}", carName);
+        CarModel? myCar = this.carRepository.GetMyCar();
+        if (myCar is not null)
+        {
+            this.logger.LogInformation("Returning my car to view");
+            this.ViewData["CarName"] = myCar.CarName;
+            this.ViewData["CarImage"] = myCar.CarImage;
+        }
+        else
+        {
+            string carName = this.nameGenerator.GetRandomCarName();
+            this.ViewData["CarName"] = carName;
+            this.logger.LogInformation("Got Car Name: {0}", carName);
 
-        string carImage = await new CarDoesNotExist().GetPicture();
-        this.ViewData["CarImage"] = carImage;
-        this.logger.LogInformation("Got Car Image");
+            string carImage = await new CarDoesNotExist().GetPicture();
+            this.ViewData["CarImage"] = carImage;
+            this.logger.LogInformation("Got Car Image");
 
-        this.carRepository.AddCar(new CarModel() { CarName = carName, CarImage = carImage });
+            this.carRepository.AddCar(new CarModel() { CarName = carName, CarImage = carImage, IsMe = true });
+        }
 
         return this.View();
     }
@@ -73,15 +84,19 @@ public class HomeController : Controller
 
         vote.VoteId = voteDb.Id;
 
-        bool order = Random.Shared.Next(0, 1) == 1;
+        bool order = Random.Shared.Next() > int.MaxValue / 2;
+        if (order)
+        {
+            (vote.Car1Name, vote.Car2Name) = (vote.Car2Name, vote.Car1Name);
+        }
 
-        CarModel? car = this.carRepository.GetCarByName(order ? vote.Car1Name : vote.Car2Name);
+        CarModel? car = this.carRepository.GetCarByName(vote.Car1Name);
         vote.Car1Image = car?.CarImage ?? string.Empty;
-        vote.Car1Score = car?.Score ?? 0;
+        vote.Car1Score = car?.Score ?? new CarModel().Score;
 
-        car = this.carRepository.GetCarByName(order ? vote.Car2Name: vote.Car1Name);
+        car = this.carRepository.GetCarByName(vote.Car2Name);
         vote.Car2Image = car?.CarImage ?? string.Empty;
-        vote.Car2Score = car?.Score ?? 0;
+        vote.Car2Score = car?.Score ?? new CarModel().Score;
 
         this.logger.LogInformation("Returning vote to view");
 
